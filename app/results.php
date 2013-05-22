@@ -1,37 +1,47 @@
-<?php 
+<?php
 // consty results
 $CONSTY = 1;
 ?>
-<div>
-    <?php foreach ( getResults($CONSTY) as $results ): 
-        $partyname = '';
-        $vote_percent = 45;
+<div> YOUR CONSTITUENCY:
+    <?php
+    $results = getResults($CONSTY);
+#    echo("<pre>".print_r($results,1)."</pre>");
+
+    foreach ($results['votes'] as $partyname => $tally):
+        $vote_percent = round($tally / $results['totalvotes'] * 100, 1);
+        $vote_percent2 = round($tally / $results['totalvotes'] * 100, 0);
         ?>
-        <?=$partyname?> <?=$vote_percent?>%
-        <div style="width: <?=$vote_percent?>; color: black; margin: 3px 0; height: 3px;">
+        <div>
+            <?= $partyname ?> <?= $vote_percent . "%" ?>
+            <div style="width: <?= $vote_percent2 . "%" ?>; background-color: black; border: 1px solid black; margin: 3px 0; height: 3px;">
+            </div>
         </div>
     <?php endforeach; ?>
-<div>
 </div>
 
-<?php 
+<?php
 // national results
 $CONSTY = FALSE;
 ?>
-<div>
-    <?php foreach ( getResults($CONSTY) as $results ): 
-        $partyname = '';
-        $vote_percent = 45;
+<div> NATIONAL:
+    <?php
+    $results = getResults($CONSTY);
+#    echo("<pre>".print_r($results,1)."</pre>");
+
+    foreach ($results['votes'] as $partyname => $tally):
+        $vote_percent = round($tally / $results['totalvotes'] * 100, 1);
+        $vote_percent2 = round($tally / $results['totalvotes'] * 100, 0);
         ?>
-        <?=$partyname?> <?=$vote_percent?>%
-        <div style="width: <?=$vote_percent?>; color: black; margin: 3px 0; height: 3px;">
+        <div>
+            <?= $partyname ?> <?= $vote_percent . "%" ?>
+            <div style="width: <?= $vote_percent2 . "%" ?>; background-color: black; border: 1px solid black; margin: 3px 0; height: 3px;">
+            </div>
         </div>
     <?php endforeach; ?>
-<div>
 </div>
 
-    
-    
+
+
 <?php ?>
 <?php ?>
 <?php ?>

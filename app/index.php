@@ -10,12 +10,13 @@ include($APPROOT."/config.php");
 ob_start();
 
 $USER = checkUser();
-echo("<pre>".print_r($USER,1));
+#echo("<pre>".print_r($USER,1));
 
-if ( $_POST && ! $USER['date_voted'] ){
-    $party = 1;
-    $consty = 1;
-    $user = 1;
+#if ( $_POST && ! $USER['date_voted'] ){
+if ( $_POST ){
+    $party = mysql_real_escape_string($_POST['party']);
+    $consty = mysql_real_escape_string($_POST['consty']);
+    $user = $USER['id'];
     $sql = sprintf("insert into vote set user_id = %d, party_id=%d, consty_id=%d", $user , $party, $consty );
     $result = mysql_query($sql);
     if ( ! $result ) die(mysql_error());
@@ -79,13 +80,24 @@ function checkUser(){
 
 
 function getResults($consty = false){
-    $where = $consty? "where consty_id = $consty" : "";
+    $where = $consty? " AND vote.consty_id = $consty" : "";
     $sql = "select count(vote.user_id) as tally, party.name as partyname, consty.name as constyname 
         from vote 
         LEFT JOIN  consty on consty.id = consty_id
         LEFT JOIN  party on party.id = party_id
     $where group by party_id order by tally desc";
+    $sql = "
+        select party.name as partyname,
+        count(DISTINCT(vote.id)) as tally
+        FROM
+        party 
+        LEFT JOIN 
+        vote on vote.party_id = party.id
+        $where 
+            group by party_id order by tally desc
+    ";
     $result = mysql_query($sql);
+ #   echo $sql;
     if ( ! $result ) die(mysql_error());
     $totalvotes = 0;
     while ( $row = mysql_fetch_assoc($result)){
