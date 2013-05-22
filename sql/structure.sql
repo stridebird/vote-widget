@@ -3,7 +3,7 @@
 # Server version:               5.1.50-community
 # Server OS:                    Win32
 # HeidiSQL version:             6.0.0.3603
-# Date/time:                    2013-05-22 10:59:24
+# Date/time:                    2013-05-22 11:25:32
 # --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -19,10 +19,13 @@ CREATE TABLE IF NOT EXISTS `consty` (
   `date_created` datetime NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-# Dumping data for table votewidget.consty: ~0 rows (approximately)
+# Dumping data for table votewidget.consty: ~2 rows (approximately)
 /*!40000 ALTER TABLE `consty` DISABLE KEYS */;
+INSERT INTO `consty` (`id`, `name`, `date_created`, `date_modified`) VALUES
+	(1, 'battersea', '2013-05-22 11:01:59', '2013-05-22 11:02:02'),
+	(2, 'lambeth', '2013-05-22 11:02:15', '2013-05-22 11:02:15');
 /*!40000 ALTER TABLE `consty` ENABLE KEYS */;
 
 
@@ -34,10 +37,13 @@ CREATE TABLE IF NOT EXISTS `party` (
   `date_created` datetime NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
-# Dumping data for table votewidget.party: ~0 rows (approximately)
+# Dumping data for table votewidget.party: ~2 rows (approximately)
 /*!40000 ALTER TABLE `party` DISABLE KEYS */;
+INSERT INTO `party` (`id`, `name`, `date_created`, `date_modified`) VALUES
+	(1, 'labour', '2013-05-22 11:01:17', '2013-05-22 11:01:18'),
+	(2, 'conservative', '2013-05-22 11:01:36', '2013-05-22 11:01:36');
 /*!40000 ALTER TABLE `party` ENABLE KEYS */;
 
 
@@ -47,15 +53,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) DEFAULT NULL,
   `ip` varchar(15) NOT NULL,
+  `ua` varchar(255) NOT NULL,
   `hash` varchar(32) NOT NULL,
   `date_voted` datetime DEFAULT NULL,
   `date_created` datetime NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
-# Dumping data for table votewidget.user: ~0 rows (approximately)
+# Dumping data for table votewidget.user: ~2 rows (approximately)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` (`id`, `email`, `ip`, `ua`, `hash`, `date_voted`, `date_created`, `date_modified`) VALUES
+	(1, NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 6.0; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.152 Safari/537.22', '95221c32d5957c566b794dd190aa63ce', NULL, '2013-05-22 11:24:45', '2013-05-22 11:24:45');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 
@@ -74,10 +83,12 @@ CREATE TABLE IF NOT EXISTS `vote` (
   CONSTRAINT `FK_vote_party` FOREIGN KEY (`party_id`) REFERENCES `party` (`id`),
   CONSTRAINT `FK_votes_constituencies` FOREIGN KEY (`consty_id`) REFERENCES `consty` (`id`),
   CONSTRAINT `FK_votes_users` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 # Dumping data for table votewidget.vote: ~0 rows (approximately)
 /*!40000 ALTER TABLE `vote` DISABLE KEYS */;
+INSERT INTO `vote` (`id`, `user_id`, `consty_id`, `party_id`, `date_modified`) VALUES
+	(1, 1, 1, 1, '2013-05-22 11:24:59');
 /*!40000 ALTER TABLE `vote` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
