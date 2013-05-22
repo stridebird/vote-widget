@@ -34,8 +34,9 @@ ob_end_clean();
 include($APPROOT."/template.php");
 exit;
 
-function getConsty(){
-    $sql = "select * from consty order by name";
+function getConsty($id=false){
+    $where = $id? " AND id = $id" : "";
+    $sql = "select * from consty order by name $where";
     $result = mysql_query($sql);
     if ( ! $result ) die(mysql_error());
     while ( $row = mysql_fetch_assoc($result)){

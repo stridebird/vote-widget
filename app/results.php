@@ -1,10 +1,11 @@
 <?php
 // consty results
-$CONSTY = 1;
+$c = getConsty($consty);
+$consty_name = $c[$consty]
 ?>
-<div> YOUR CONSTITUENCY:
+<div> YOUR CONSTITUENCY: <?= $consty_name ?>
     <?php
-    $results = getResults($CONSTY);
+    $results = getResults($consty['id']);
 #    echo("<pre>".print_r($results,1)."</pre>");
 
     foreach ($results['votes'] as $partyname => $tally):
@@ -21,11 +22,11 @@ $CONSTY = 1;
 
 <?php
 // national results
-$CONSTY = FALSE;
+$consty = FALSE;
 ?>
 <div> NATIONAL:
     <?php
-    $results = getResults($CONSTY);
+    $results = getResults($consty);
 #    echo("<pre>".print_r($results,1)."</pre>");
 
     foreach ($results['votes'] as $partyname => $tally):
