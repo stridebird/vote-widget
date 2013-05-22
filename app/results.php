@@ -13,7 +13,7 @@ $CONSTY = 1;
         ?>
         <div>
             <?= $partyname ?> <?= $vote_percent . "%" ?>
-            <div style="width: <?= $vote_percent2 . "%" ?>; background-color: black; border: 1px solid black; margin: 3px 0; height: 3px;">
+            <div style="width: <?= $vote_percent2 . "%" ?>; background-color: #666; border: 1px solid black; margin: 3px 0; height: 3px;">
             </div>
         </div>
     <?php endforeach; ?>
@@ -40,7 +40,7 @@ $CONSTY = FALSE;
     <?php endforeach; ?>
 </div>
 
-
+<a href="">vote again</a>
 
 <?php ?>
 <?php ?>
