@@ -4,6 +4,8 @@
  * 
  */
 
+error_reporting(E_ERROR);
+
 $APPROOT = dirname(__FILE__);
 
 include($APPROOT."/config.php");
@@ -12,16 +14,23 @@ ob_start();
 $USER = checkUser();
 #echo("<pre>".print_r($USER,1));
 
-#if ( $_POST && ! $USER['date_voted'] ){
-if ( $_POST ){
+if ( $_POST && ! $USER['date_voted'] ){
     $party = mysql_real_escape_string($_POST['party']);
     $consty = mysql_real_escape_string($_POST['consty']);
     $user = $USER['id'];
     $sql = sprintf("insert into vote set user_id = %d, party_id=%d, consty_id=%d", $user , $party, $consty );
     $result = mysql_query($sql);
     if ( ! $result ) die(mysql_error());
+    $sql = sprintf("update user set date_voted=NOW() WHERE id=%d", $USER['id'] );
+    $result = mysql_query($sql);
+    if ( ! $result ) die(mysql_error());
     include($APPROOT."/results.php");
 } elseif ( $USER['date_voted'] ){
+    $sql = sprintf("select * from vote where user_id=%d",  $USER['id'] );
+    $result = mysql_query($sql);
+    if ( ! $result ) die(mysql_error());
+    $row = mysql_fetch_assoc($result);
+    $consty = ( $_GET['consty'] ) ? $_GET['consty'] : $row['consty_id'] ;
     include($APPROOT."/results.php");
 } else {
     $CONSTY = getConsty();
@@ -45,7 +54,7 @@ function getConsty($id=false){
     return $CONSTY;
 }
 function getParty(){
-    $sql = "select * from party order by name";
+    $sql = "select * from party order by if ( name='other',1,0), name";
     $result = mysql_query($sql);
     if ( ! $result ) die(mysql_error());
     while ( $row = mysql_fetch_assoc($result)){
@@ -88,17 +97,15 @@ function getResults($consty = false){
         LEFT JOIN  party on party.id = party_id
     $where group by party_id order by tally desc";
     $sql = "
-        select party.name as partyname,
-        count(DISTINCT(vote.id)) as tally
-        FROM
-        party 
-        LEFT JOIN 
-        vote on vote.party_id = party.id
-        $where 
-            group by party_id order by tally desc
+        SELECT party.name AS partyname,
+        COUNT(DISTINCT(vote.id)) AS tally
+        FROM party
+        LEFT JOIN vote ON vote.party_id = party.id $where 
+        GROUP BY party.id
+        ORDER BY tally DESC
     ";
     $result = mysql_query($sql);
- #   echo $sql;
+#    echo $sql;
     if ( ! $result ) die(mysql_error());
     $totalvotes = 0;
     while ( $row = mysql_fetch_assoc($result)){

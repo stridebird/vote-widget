@@ -1,9 +1,16 @@
 div.vote-widget {
     font-family: helvetica, verdana, sans;
 }
-div.vote-widget>div { margin: 0px 3px 20px 3px;}
-div.vote-widget div { border: 0px solid red;}
 
 div.vote-widget form { margin: 5px 0;}
 div.vote-widget form .formelement { margin: 3px;}
 div.vote-widget form .formlabel { width: 180px; float: left;}
+
+div.vote-widget>div { margin: 0px 3px 20px 3px;}
+div.vote-widget div { border: 0px solid red;}
+
+div.results { }
+div.results form { display: inline; }
+div.results div.resultbox { background-color: #eee; padding: 5px;}
+
+
